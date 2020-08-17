@@ -1,6 +1,6 @@
 [![MCHP](https://www.microchip.com/ResourcePackages/Microchip/assets/dist/images/logo.png)](https://www.microchip.com)
 
-# Title
+# USART driver asynchronous - USART multi instance
 
 This example application demonstrates the multi instance feature of the asynchronous mode of the USART driver.
 

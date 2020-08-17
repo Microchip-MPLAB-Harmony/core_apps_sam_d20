@@ -112,6 +112,7 @@ void SERCOM4_USART_Initialize( void )
     /* Wait for sync */
     while((SERCOM4_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk) & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
 
+
     /* Enable the UART after the configurations */
     SERCOM4_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_ENABLE_Msk;
 
@@ -173,15 +174,17 @@ bool SERCOM4_USART_SerialSetup( USART_SERIAL_SETUP * serialSetup, uint32_t clkFr
             /* Configure Parity Options */
             if(serialSetup->parity == USART_PARITY_NONE)
             {
-                SERCOM4_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_FORM(0x0) ;
+                SERCOM4_REGS->USART_INT.SERCOM_CTRLA |= 
+                (SERCOM4_REGS->USART_INT.SERCOM_CTRLA & ~SERCOM_USART_INT_CTRLA_FORM_Msk) | SERCOM_USART_INT_CTRLA_FORM(0x0);
 
-                SERCOM4_REGS->USART_INT.SERCOM_CTRLB |= (uint32_t) serialSetup->dataWidth | (uint32_t) serialSetup->stopBits;
+                SERCOM4_REGS->USART_INT.SERCOM_CTRLB |= (SERCOM4_REGS->USART_INT.SERCOM_CTRLB & ~(SERCOM_USART_INT_CTRLB_CHSIZE_Msk | SERCOM_USART_INT_CTRLB_SBMODE_Pos)) | ((uint32_t) serialSetup->dataWidth | (uint32_t) serialSetup->stopBits);
             }
             else
             {
-                SERCOM4_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_FORM(0x1) ;
+                SERCOM4_REGS->USART_INT.SERCOM_CTRLA |= 
+                (SERCOM4_REGS->USART_INT.SERCOM_CTRLA & ~SERCOM_USART_INT_CTRLA_FORM_Msk) | SERCOM_USART_INT_CTRLA_FORM(0x1);
 
-                SERCOM4_REGS->USART_INT.SERCOM_CTRLB |= (uint32_t) serialSetup->dataWidth | (uint32_t) serialSetup->parity | (uint32_t) serialSetup->stopBits;
+                SERCOM4_REGS->USART_INT.SERCOM_CTRLB |= (SERCOM4_REGS->USART_INT.SERCOM_CTRLB & ~(SERCOM_USART_INT_CTRLB_CHSIZE_Msk | SERCOM_USART_INT_CTRLB_SBMODE_Pos | SERCOM_USART_INT_CTRLB_PMODE_Msk)) | (uint32_t) serialSetup->dataWidth | (uint32_t) serialSetup->stopBits | (uint32_t) serialSetup->parity ;
             }
 
             /* Wait for sync */
@@ -214,6 +217,23 @@ USART_ERROR SERCOM4_USART_ErrorGet( void )
     return errorStatus;
 }
 
+
+void SERCOM4_USART_TransmitterEnable( void )
+{
+    SERCOM4_REGS->USART_INT.SERCOM_CTRLB |= SERCOM_USART_INT_CTRLB_TXEN_Msk;
+	
+	/* Wait for sync */
+    while((SERCOM4_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk) & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+}
+
+void SERCOM4_USART_TransmitterDisable( void )
+{
+    SERCOM4_REGS->USART_INT.SERCOM_CTRLB &= ~SERCOM_USART_INT_CTRLB_TXEN_Msk;
+	
+	/* Wait for sync */
+    while((SERCOM4_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk) & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+}
+
 bool SERCOM4_USART_Write( void *buffer, const size_t size )
 {
     bool writeStatus      = false;
@@ -243,6 +263,7 @@ bool SERCOM4_USART_Write( void *buffer, const size_t size )
     return writeStatus;
 }
 
+
 bool SERCOM4_USART_WriteIsBusy( void )
 {
     return sercom4USARTObj.txBusyStatus;
@@ -258,6 +279,23 @@ void SERCOM4_USART_WriteCallbackRegister( SERCOM_USART_CALLBACK callback, uintpt
     sercom4USARTObj.txCallback = callback;
 
     sercom4USARTObj.txContext = context;
+}
+
+
+void SERCOM4_USART_ReceiverEnable( void )
+{
+    SERCOM4_REGS->USART_INT.SERCOM_CTRLB |= SERCOM_USART_INT_CTRLB_RXEN_Msk;
+	
+	/* Wait for sync */
+    while((SERCOM4_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk) & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+}
+
+void SERCOM4_USART_ReceiverDisable( void )
+{
+    SERCOM4_REGS->USART_INT.SERCOM_CTRLB &= ~SERCOM_USART_INT_CTRLB_RXEN_Msk;
+	
+	/* Wait for sync */
+    while((SERCOM4_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk) & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
 }
 
 bool SERCOM4_USART_Read( void *buffer, const size_t size )
@@ -298,6 +336,23 @@ size_t SERCOM4_USART_ReadCountGet( void )
     return sercom4USARTObj.rxProcessedSize;
 }
 
+bool SERCOM4_USART_ReadAbort(void)
+{
+    if (sercom4USARTObj.rxBusyStatus == true)
+    {        
+        /* Disable the receive interrupt */				
+		SERCOM4_REGS->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_RXC_Msk;
+						
+        
+        sercom4USARTObj.rxBusyStatus = false;  		
+        
+		/* If required application should read the num bytes processed prior to calling the read abort API */
+        sercom4USARTObj.rxSize = sercom4USARTObj.rxProcessedSize = 0;
+    }	
+	
+	return true;	
+}
+
 void SERCOM4_USART_ReadCallbackRegister( SERCOM_USART_CALLBACK callback, uintptr_t context )
 {
     sercom4USARTObj.rxCallback = callback;
@@ -305,9 +360,12 @@ void SERCOM4_USART_ReadCallbackRegister( SERCOM_USART_CALLBACK callback, uintptr
     sercom4USARTObj.rxContext = context;
 }
 
+
+
 void static SERCOM4_USART_ISR_RX_Handler( void )
 {
     uint16_t temp;
+
     if(sercom4USARTObj.rxBusyStatus == true)
     {
         if(sercom4USARTObj.rxProcessedSize < sercom4USARTObj.rxSize)
@@ -320,6 +378,7 @@ void static SERCOM4_USART_ISR_RX_Handler( void )
                 sercom4USARTObj.rxBusyStatus = false;
                 sercom4USARTObj.rxSize = 0;
                 SERCOM4_REGS->USART_INT.SERCOM_INTENCLR = SERCOM_USART_INT_INTENCLR_RXC_Msk;
+				
 
                 if(sercom4USARTObj.rxCallback != NULL)
                 {
