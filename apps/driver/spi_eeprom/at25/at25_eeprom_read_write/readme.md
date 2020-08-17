@@ -1,6 +1,6 @@
 [![MCHP](https://www.microchip.com/ResourcePackages/Microchip/assets/dist/images/logo.png)](https://www.microchip.com)
 
-# Title
+# SPI EEPROM AT25 driver - EEPROM Read Write
 
 This example application demonstrates how to use the AT25 driver to perform read and write operations on AT25 series of EEPROM.
 
