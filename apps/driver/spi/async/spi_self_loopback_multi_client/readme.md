@@ -1,6 +1,6 @@
 [![MCHP](https://www.microchip.com/ResourcePackages/Microchip/assets/dist/images/logo.png)](https://www.microchip.com)
 
-# Title
+# SPI Driver asynchronous - Self loopback multi client
 
 This example demonstrates the multi client feature of the SPI driver by performing self-loop back with two clients connected on the same SPI bus
 
