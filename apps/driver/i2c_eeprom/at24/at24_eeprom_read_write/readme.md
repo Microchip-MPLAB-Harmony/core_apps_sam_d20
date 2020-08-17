@@ -1,6 +1,6 @@
 [![MCHP](https://www.microchip.com/ResourcePackages/Microchip/assets/dist/images/logo.png)](https://www.microchip.com)
 
-# Title
+# I2C EEPROM AT24 driver - EEPROM Read Write
 
 This example application demonstrates how to use the AT24 driver to perform read and write operations on AT24 series of EEPROM. 
 
