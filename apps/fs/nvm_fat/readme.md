@@ -1,6 +1,6 @@
 [![MCHP](https://www.microchip.com/ResourcePackages/Microchip/assets/dist/images/logo.png)](https://www.microchip.com)
 
-# Title
+# FAT filesystem using NVM Media
 
 This application shows an example of implementing a FAT disk in the device internal Flash memory.
 
@@ -55,7 +55,7 @@ The following table shows the target hardware for the application projects.
 2. Press Switch to start the file operations 
 3. The LED is turned ON when the File **FILE.TXT** has the app data **"Hello World"** written in it 
 
-Refer to the following table for LED name:
+Refer to the following table for LED and Switch name:
 
 | Board | LED Name | Switch Nae |
 | ----- | -------- | ---------- |
