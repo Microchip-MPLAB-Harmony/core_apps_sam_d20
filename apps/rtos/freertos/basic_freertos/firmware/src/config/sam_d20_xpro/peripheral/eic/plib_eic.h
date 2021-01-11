@@ -1,18 +1,23 @@
 /*******************************************************************************
-  System Exceptions File
+  External Interrupt Controller (EIC) PLIB
 
-  File Name:
-    exceptions.c
+  Company
+    Microchip Technology Inc.
 
-  Summary:
-    This file contains a function which overrides the default _weak_ exception
-    handlers provided by the interrupt.c file.
+  File Name
+    plib_eic.h
 
-  Description:
-    This file redefines the default _weak_  exception handler with a more debug
-    friendly one. If an unexpected exception occurs the code will stop in a
-    while(1) loop.
- *******************************************************************************/
+  Summary
+    EIC PLIB Header File.
+
+  Description
+    This file defines the interface to the EIC peripheral library. This
+    library provides access to and control of the associated peripheral
+    instance.
+
+  Remarks:
+    None.
+*******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
@@ -39,44 +44,83 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
+/* Guards against multiple inclusion */
+#ifndef PLIB_EIC_H
+#define PLIB_EIC_H
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-#include "configuration.h"
-#include "interrupts.h"
-#include "definitions.h"
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Exception Handling Routine
-// *****************************************************************************
-// *****************************************************************************
+#include "device.h"
+#include <stdbool.h>
+#include <stddef.h>
 
-/* Brief default interrupt handlers for core IRQs.*/
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus // Provide C++ Compatibility
 
-void __attribute__((noreturn)) NonMaskableInt_Handler(void)
-{
-#if defined(__DEBUG) || defined(__DEBUG_D) && defined(__XC32)
-    __builtin_software_breakpoint();
+    extern "C" {
+
 #endif
-    while (true)
-    {
+// DOM-IGNORE-END
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
+
+/* EIC Pin Count */
+#define EXTINT_COUNT                        (16U)
+
+typedef enum
+{
+    /* External Interrupt Controller Pin 15 */
+    EIC_PIN_15 = 15,
+
+    EIC_PIN_MAX = 16
+
+} EIC_PIN;
+
+
+typedef void (*EIC_CALLBACK) (uintptr_t context);
+
+typedef struct
+{
+    /* External Interrupt Pin Callback Handler */
+    EIC_CALLBACK    callback;
+
+    /* External Interrupt Pin Client context */
+    uintptr_t       context;
+
+    /* External Interrupt Pin number */
+    EIC_PIN         eicPinNo;
+
+} EIC_CALLBACK_OBJ;
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
+
+void EIC_Initialize(void);
+
+void EIC_InterruptEnable(EIC_PIN pin);
+
+void EIC_InterruptDisable(EIC_PIN pin);
+
+void EIC_CallbackRegister(EIC_PIN pin, EIC_CALLBACK callback, uintptr_t context);
+
+
+
+#ifdef __cplusplus // Provide C++ Compatibility
+
     }
-}
 
-void __attribute__((noreturn)) HardFault_Handler(void)
-{
-#if defined(__DEBUG) || defined(__DEBUG_D) && defined(__XC32)
-   __builtin_software_breakpoint();
 #endif
-   while (true)
-   {
-   }
-}
 
-/*******************************************************************************
- End of File
- */
-
+#endif /* PLIB_EIC_H */
