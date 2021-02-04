@@ -35,7 +35,7 @@ children:
       - type: Dynamic
         attributes: {id: core, value: '1500'}
       - type: User
-        attributes: {value: '1464'}
+        attributes: {value: '6'}
   - type: KeyValueSet
     attributes: {id: CONFIG_CLOCK_DFLL_OPMODE}
     children:
@@ -52,6 +52,8 @@ children:
       children:
       - type: Dynamic
         attributes: {id: core, value: 'false'}
+      - type: User
+        attributes: {value: 'true'}
   - type: Boolean
     attributes: {id: CONF_CLOCK_XOSC32K_ENABLE}
     children:
@@ -65,7 +67,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '47972352'}
+        attributes: {id: core, value: '48000000'}
   - type: Menu
     attributes: {id: CoreIARMenu}
     children:
@@ -153,7 +155,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '47972352'}
+        attributes: {id: core, value: '48000000'}
   - type: Boolean
     attributes: {id: EIC_CLOCK_ENABLE}
     children:
@@ -167,7 +169,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '47972352'}
+        attributes: {id: core, value: '48000000'}
   - type: Boolean
     attributes: {id: EIC_INTERRUPT_ENABLE}
     children:
@@ -202,7 +204,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '47972352'}
+        attributes: {id: core, value: '48000000'}
   - type: KeyValueSet
     attributes: {id: GCLK_0_SRC}
     children:
@@ -234,7 +236,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '32768'}
+        attributes: {id: core, value: '8000000'}
   - type: KeyValueSet
     attributes: {id: GCLK_1_SRC}
     children:
@@ -243,7 +245,7 @@ children:
       - type: Dynamic
         attributes: {id: core, value: '5'}
       - type: User
-        attributes: {value: '4'}
+        attributes: {value: '5'}
   - type: Integer
     attributes: {id: GCLK_2_FREQ}
     children:
@@ -321,7 +323,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '32768'}
+        attributes: {id: core, value: '8000000'}
   - type: KeyValueSet
     attributes: {id: GCLK_ID_0_GENSEL}
     children:
@@ -344,7 +346,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '47972352'}
+        attributes: {id: core, value: '48000000'}
   - type: Boolean
     attributes: {id: GCLK_ID_3_CHEN}
     children:
@@ -358,7 +360,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '47972352'}
+        attributes: {id: core, value: '48000000'}
   - type: Boolean
     attributes: {id: GCLK_INST_NUM1}
     children:
@@ -563,7 +565,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '0'}
+        attributes: {id: core, value: '8000000'}
   - type: String
     attributes: {id: PIN_10_FUNCTION_TYPE}
     children:
@@ -2600,7 +2602,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '47972352'}
+        attributes: {id: core, value: '48000000'}
   - type: Boolean
     attributes: {id: SERCOM3_INTERRUPT_ENABLE}
     children:
@@ -2672,7 +2674,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: core, value: '0xBB64'}
+        attributes: {id: core, value: '0xBB80'}
   - type: Float
     attributes: {id: SYSTICK_PERIOD_MS}
     children:
@@ -2681,7 +2683,7 @@ children:
       - type: Float
         attributes: {id: max}
         children:
-        - {type: Value, value: '349.72675'}
+        - {type: Value, value: '349.5253'}
   - type: Integer
     attributes: {id: SYSTICK_PERIOD_US}
     children:
@@ -2731,6 +2733,19 @@ children:
       children:
       - type: Dynamic
         attributes: {id: FreeRTOS, value: 'true'}
+  - type: Boolean
+    attributes: {id: USE_SYSTICK_INTERRUPT}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: readOnly}
+        children:
+        - {type: Value, value: 'false'}
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: core, value: 'false'}
   - type: Boolean
     attributes: {id: XOSC32K_EN32K}
     children:

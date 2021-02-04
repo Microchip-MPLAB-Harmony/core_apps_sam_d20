@@ -10,6 +10,6 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: FreeRTOS, value: '47972352'}
+        attributes: {id: FreeRTOS, value: '48000000'}
 - type: ElementPosition
   attributes: {x: '21', y: '79', id: FreeRTOS}

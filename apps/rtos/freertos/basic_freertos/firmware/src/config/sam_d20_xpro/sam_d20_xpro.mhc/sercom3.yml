@@ -54,7 +54,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: sercom3, value: '22'}
+        attributes: {id: sercom3, value: '23'}
   - type: Comment
     attributes: {id: USART_BAUD_ERROR_COMMENT}
     children:
@@ -70,7 +70,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: sercom3, value: '63017'}
+        attributes: {id: sercom3, value: '63019'}
   - type: KeyValueSet
     attributes: {id: USART_FORM}
     children:

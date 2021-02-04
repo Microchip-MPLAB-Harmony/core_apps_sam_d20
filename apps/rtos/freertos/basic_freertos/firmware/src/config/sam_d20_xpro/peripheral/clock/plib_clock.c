@@ -45,6 +45,13 @@
 static void SYSCTRL_Initialize(void)
 {
 
+    /* Configure 8MHz Oscillator */
+    SYSCTRL_REGS->SYSCTRL_OSC8M = (SYSCTRL_REGS->SYSCTRL_OSC8M & (SYSCTRL_OSC8M_CALIB_Msk | SYSCTRL_OSC8M_FRANGE_Msk)) | SYSCTRL_OSC8M_ENABLE_Msk | SYSCTRL_OSC8M_PRESC(0x0) ;
+
+    while((SYSCTRL_REGS->SYSCTRL_PCLKSR & SYSCTRL_PCLKSR_OSC8MRDY_Msk) != SYSCTRL_PCLKSR_OSC8MRDY_Msk)
+    {
+        /* Waiting for the OSC8M Ready state */
+    }
 
     /****************** XOSC32K initialization  ******************************/
 
@@ -79,7 +86,7 @@ static void DFLL_Initialize(void)
     {
         /* Waiting for the Ready state */
     }
-    SYSCTRL_REGS->SYSCTRL_DFLLMUL = SYSCTRL_DFLLMUL_MUL(1464) | SYSCTRL_DFLLMUL_FSTEP(1) | SYSCTRL_DFLLMUL_CSTEP(1);
+    SYSCTRL_REGS->SYSCTRL_DFLLMUL = SYSCTRL_DFLLMUL_MUL(6) | SYSCTRL_DFLLMUL_FSTEP(1) | SYSCTRL_DFLLMUL_CSTEP(1);
 
     while((SYSCTRL_REGS->SYSCTRL_PCLKSR & SYSCTRL_PCLKSR_DFLLRDY_Msk) != SYSCTRL_PCLKSR_DFLLRDY_Msk)
     {
@@ -111,7 +118,7 @@ static void GCLK0_Initialize(void)
 
 static void GCLK1_Initialize(void)
 {
-    GCLK_REGS->GCLK_GENCTRL = GCLK_GENCTRL_SRC(5) | GCLK_GENCTRL_GENEN_Msk | GCLK_GENCTRL_ID(1);
+    GCLK_REGS->GCLK_GENCTRL = GCLK_GENCTRL_SRC(6) | GCLK_GENCTRL_GENEN_Msk | GCLK_GENCTRL_ID(1);
 
     while((GCLK_REGS->GCLK_STATUS & GCLK_STATUS_SYNCBUSY_Msk) == GCLK_STATUS_SYNCBUSY_Msk)
     {
@@ -145,6 +152,4 @@ void CLOCK_Initialize (void)
     /* Configure the APBC Bridge Clocks */
     PM_REGS->PM_APBCMASK = 0x10020;
 
-    /*Disable RC oscillator*/
-    SYSCTRL_REGS->SYSCTRL_OSC8M = 0x0;
 }
