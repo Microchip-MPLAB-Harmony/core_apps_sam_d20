@@ -40,7 +40,7 @@ Following table provides number of peripheral library examples available for dif
 
 Following table provides number of peripheral library examples available for different development kits.
 
-| Development Kits  | MPLABx applications |
+| Development Kits  | MPLAB X applications |
 |:-----------------:|:-------------------:|
 | [SAM D20 Xplained Pro Evaluation Kit](https://www.microchip.com/developmenttools/ProductDetails/ATSAMD20-XPRO) | 9 |
 
@@ -80,7 +80,7 @@ Following table provides number of peripheral library examples available for dif
 
 Following table provides number of peripheral library examples available for different development kits.
 
-| Development Kits  | MPLABx applications |
+| Development Kits  | MPLAB X applications |
 |:-----------------:|:-------------------:|
 | [SAM D20 Xplained Pro Evaluation Kit](https://www.microchip.com/developmenttools/ProductDetails/ATSAMD20-XPRO) | 9 |
 
