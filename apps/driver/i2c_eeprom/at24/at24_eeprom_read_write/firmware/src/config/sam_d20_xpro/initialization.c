@@ -182,13 +182,12 @@ void SYS_Initialize ( void* data )
 
 
 
-    NVMCTRL_Initialize( );
-
     SERCOM2_I2C_Initialize();
 
-    EVSYS_Initialize();
+    NVMCTRL_Initialize( );
 
 	BSP_Initialize();
+
 
     sysObj.drvAT24 = DRV_AT24_Initialize(DRV_AT24_INDEX, (SYS_MODULE_INIT *)&drvAT24InitData);
 
