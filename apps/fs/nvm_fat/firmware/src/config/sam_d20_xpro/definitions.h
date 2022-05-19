@@ -50,8 +50,8 @@
 #include <stdbool.h>
 #include "peripheral/nvmctrl/plib_nvmctrl.h"
 #include "driver/memory/drv_memory_nvmctrl.h"
-#include "peripheral/evsys/plib_evsys.h"
 #include "bsp/bsp.h"
+#include "peripheral/evsys/plib_evsys.h"
 #include "system/fs/sys_fs.h"
 #include "system/fs/sys_fs_media_manager.h"
 #include "system/fs/sys_fs_fat_interface.h"
