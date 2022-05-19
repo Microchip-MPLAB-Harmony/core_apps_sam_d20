@@ -182,7 +182,6 @@ void SYS_Initialize ( void* data )
 
     NVMCTRL_Initialize( );
 
-    EVSYS_Initialize();
 
 	BSP_Initialize();
     TC0_TimerInitialize();
