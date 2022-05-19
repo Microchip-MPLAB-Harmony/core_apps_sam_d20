@@ -270,7 +270,6 @@ void SYS_Initialize ( void* data )
 
     NVMCTRL_Initialize( );
 
-    EVSYS_Initialize();
 
 	BSP_Initialize();
     SERCOM4_USART_Initialize();
