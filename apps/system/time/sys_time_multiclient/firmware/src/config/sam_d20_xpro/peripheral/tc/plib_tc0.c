@@ -63,7 +63,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-static TC_TIMER_CALLBACK_OBJ TC0_CallbackObject;
+volatile static TC_TIMER_CALLBACK_OBJ TC0_CallbackObject;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -87,7 +87,7 @@ void TC0_TimerInitialize( void )
     TC0_REGS->COUNT16.TC_CTRLA = TC_CTRLA_MODE_COUNT16 | TC_CTRLA_PRESCALER_DIV1 | TC_CTRLA_WAVEGEN_MPWM ;
 
     /* Configure timer period */
-    TC0_REGS->COUNT16.TC_CC[0U] = 48000U;
+    TC0_REGS->COUNT16.TC_CC[0U] = 47999U;
 
     /* Clear all interrupt flags */
     TC0_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
@@ -134,7 +134,7 @@ void TC0_TimerCommandSet(TC_COMMAND command)
     while((TC0_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
-    }    
+    }
 }
 
 /* Get the current timer counter value */
@@ -205,7 +205,7 @@ void TC0_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context )
 }
 
 /* Timer Interrupt handler */
-void TC0_TimerInterruptHandler( void )
+void __attribute__((used)) TC0_TimerInterruptHandler( void )
 {
     TC_TIMER_STATUS status;
     status = (TC_TIMER_STATUS) (TC0_REGS->COUNT16.TC_INTFLAG);
@@ -213,7 +213,8 @@ void TC0_TimerInterruptHandler( void )
     TC0_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
     if(TC0_CallbackObject.callback != NULL)
     {
-        TC0_CallbackObject.callback(status, TC0_CallbackObject.context);
+        uintptr_t context = TC0_CallbackObject.context;
+        TC0_CallbackObject.callback(status, context);
     }
 }
 
