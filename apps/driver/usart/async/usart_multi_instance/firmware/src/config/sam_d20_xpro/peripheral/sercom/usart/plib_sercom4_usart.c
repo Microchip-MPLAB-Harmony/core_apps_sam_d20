@@ -47,21 +47,18 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-
 #include "interrupts.h"
 #include "plib_sercom4_usart.h"
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data
 // *****************************************************************************
 // *****************************************************************************
-
-
 /* SERCOM4 USART baud value for 115200 Hz baud rate */
 #define SERCOM4_USART_INT_BAUD_VALUE            (63019UL)
 
 volatile static SERCOM_USART_OBJECT sercom4USARTObj;
+
 
 // *****************************************************************************
 // *****************************************************************************
@@ -100,6 +97,7 @@ void SERCOM4_USART_Initialize( void )
      * Configures Sampling rate
      * Configures IBON
      */
+
     SERCOM4_REGS->USART_INT.SERCOM_CTRLA = SERCOM_USART_INT_CTRLA_MODE_USART_INT_CLK | SERCOM_USART_INT_CTRLA_RXPO(0x1UL) | SERCOM_USART_INT_CTRLA_TXPO(0x0UL) | SERCOM_USART_INT_CTRLA_DORD_Msk | SERCOM_USART_INT_CTRLA_IBON_Msk | SERCOM_USART_INT_CTRLA_FORM(0x0UL) ;
 
     /* Configure Baud Rate */
@@ -144,6 +142,10 @@ void SERCOM4_USART_Initialize( void )
     sercom4USARTObj.errorStatus = USART_ERROR_NONE;
 }
 
+
+
+
+
 uint32_t SERCOM4_USART_FrequencyGet( void )
 {
     return 48000000UL;
@@ -173,7 +175,6 @@ bool SERCOM4_USART_SerialSetup( USART_SERIAL_SETUP * serialSetup, uint32_t clkFr
         {
             baudValue = 65536U - (uint32_t)(((uint64_t)65536U * 16U * serialSetup->baudRate) / clkFrequency);
         }
-
         /* Disable the USART before configurations */
         SERCOM4_REGS->USART_INT.SERCOM_CTRLA &= ~SERCOM_USART_INT_CTRLA_ENABLE_Msk;
 
@@ -579,3 +580,7 @@ void __attribute__((used)) SERCOM4_USART_InterruptHandler( void )
         }
     }
 }
+
+
+
+
